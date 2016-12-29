@@ -3,19 +3,22 @@
 <!-- /devel/datacheck.php main Datacheck page -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<link rel="stylesheet" type="text/css" href="/css/BikeRouteClinching.css" />
+<link rel="stylesheet" type="text/css" href="/css/travelMapping.css" />
 <style type="text/css">
 </style>
 <?php
+	
   # function to generate a table with FP or not
   function writeTable($db, $fpVal, $joins) {
       global $tmsqldebug;
+	  
       // select all errors in the DB with the given $fpVal
       $sql_command = "select datacheckErrors.* from datacheckErrors ".$joins." falsePositive=".$fpVal.";";
       if ($tmsqldebug) {
           echo "<!-- SQL: ".$sql_command." -->\n";
       }
       $res = $db->query($sql_command);
+	  
       while ($row = $res->fetch_assoc()) {
         echo "<tr><td><a href=\"../hb?r=".$row['route']."\">".$row['route']."</a></td><td>";
         if (strcmp($row['label1'],"") != 0) {
@@ -34,6 +37,7 @@
 	}
         else {
 	  echo "</td><td style=\"color: red\">".$row['code']."</td><td>";
+		
 	}
         if (strcmp($row['value'],"") != 0) {
           echo $row['value'];
@@ -46,7 +50,7 @@
 
 <?php require $_SERVER['DOCUMENT_ROOT']."/lib/tmphpfuncs.php" ?>
 
-<title>Bike Route Clinching Datacheck Errors</title>
+<title>Travel Mapping Highway Data Datacheck Errors</title>
 </head>
 
 <body onload="populate_dbarrays()">
@@ -59,7 +63,7 @@ if (array_key_exists("showmarked", $_GET)) {
 }
 ?>
 
-<p class="heading">Bike Route Clinching Datacheck Errors</p>
+<p class="heading">Travel Mapping Highway Data Datacheck Errors</p>
 
 <p class="info">Quick links: <a href="#active">[Errors in Active Systems]</a><a href="#preview">[Errors in Preview Systems]</a><a href="#indev">[Errors in In-Dev Systems]</a>
 <?php
@@ -139,10 +143,10 @@ if ($showmarked) {
   <p class="subheading">Errors Marked as FPs ("Crossed Off")</p>
 
   <p class="text"><a name="marked"></a>These have been marked as FPs
-  in <a href="https://github.com/Quidditch33/HighwayData/blob/master/datacheckfps.csv">the
+  in <a href="https://github.com/TravelMapping/HighwayData/blob/master/datacheckfps.csv">the
   datacheck FP list</a> and can normally be safely ignored.  However,
   if any of these are discovered to be true errors, they should be
-  removed from the list and fixed in the route data.</p>
+  removed from the list and fixed in the highway data.</p>
 
   <table border="1" style="background-color:#ccc;font-size:60%"><tr><th>Route</th><th>Waypoints</th><th>Error</th><th>Info</th><th>FP Entry Matched</th></tr>
     <?php
